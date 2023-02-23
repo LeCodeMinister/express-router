@@ -1,4 +1,6 @@
 const express = require("express")
+const {check, validationResult} = require("express-validator")
+
 // List of Users
 let users = [
     {
@@ -33,7 +35,11 @@ usersRouter.get("/:id", (req, res) => {
 })
 
 //POST Request:
-usersRouter.post("/", (req, res) => {
+usersRouter.post("/", [check("name").not().isEmpty().trim()], (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        res.status(500).json({error: errors.array()})
+    }
     try {
         users.push(req.body);
         res.status(200).send(users);

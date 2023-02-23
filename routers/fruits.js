@@ -1,4 +1,6 @@
 const express = require("express")
+const {check, validationResult} = require("express-validator")
+
 // List of Fruits
 let fruits = [
     {
@@ -33,7 +35,11 @@ fruitsRouter.get("/:id", (req, res) => {
 })
 
 //POST Request:
-fruitsRouter.post("/", (req, res) => {
+fruitsRouter.post("/", [check("color").not().isEmpty().trim()], (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        res.status(500).json({error: errors.array()})
+    }
     try {
         fruits.push(req.body);
         res.status(200).send(fruits);
