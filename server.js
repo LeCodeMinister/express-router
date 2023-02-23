@@ -4,7 +4,7 @@ const port = 3000
 const usersRouter = require("./routers/users")
 const fruitsRouter = require("./routers/fruits")
 
-
+app.use(express.json());
 // Express Routes
 
 app.use("/users", usersRouter);
