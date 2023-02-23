@@ -21,6 +21,7 @@ let users = [
 
 const usersRouter = express.Router();
 
+//GET Request:
 usersRouter.get("/", (req, res) => {
     res.send(users);
 })
@@ -30,5 +31,36 @@ usersRouter.get("/:id", (req, res) => {
     let myUser = users[(req.params.id - 1)];
     res.send(myUser);
 })
+
+//POST Request:
+usersRouter.post("/", (req, res) => {
+    try {
+        users.push(req.body);
+        res.status(200).send(users);
+    } catch (error) {
+        res.status(500).send({err: error.message});
+    }
+})
+
+//PUT Request:
+usersRouter.put("/:id", (req, res) => {
+    try {
+        users[(req.params.id - 1)] = req.body;
+        res.status(200).send(users);
+    } catch (error) {
+        res.status(500).send({err: error.message});
+    }
+})
+
+//DELETE Request:
+usersRouter.delete("/:id", (req, res) => {
+    try {
+        users.splice((req.params.id - 1), 1);
+        res.status(200).send(users);
+    } catch (error) {
+        res.status(500).send({err: error.message});
+    }
+})
+
 
 module.exports = usersRouter;
